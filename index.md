@@ -1,5 +1,6 @@
 ## Welcome to the Guide on The Twitch API
-You can use the [editor on GitHub](https://github.com/kvnwong/kvnwong.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+
+Have you've ever made a sweet move in your game that you just wish the whole world could see? Get a headshot from across the map? Come back from a 3-1 deficit? Well, by combining Twitch's free video streaming services and the power of their video embedding API, you'll be able to share those rare moments on your site or page and this is the guide to get you started! 
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
