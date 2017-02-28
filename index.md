@@ -10,8 +10,21 @@ By the end of this tutorial and with a little help from AJAX, you should be able
 ## Getting Started
 
 A general overview of the Twitch API in general can be found [here](https://dev.twitch.tv/docs). With Twitch's API, users can embed live-stream videos and saved clips, create chat-bots, and take actions based on an existing twitch account.
+For this guide, we will focus on the clip embedding feature of the API using AJAX calls on javascript. 
 
+Before we begin coding, we will need a client-id from Twitch. Any use of Twitch's API now require an authorization token. To get your own token you will first need to get a Twitch account. An account can be made [here](https://www.twitch.tv/) by going to top right portion of the page and clicking on sign-up
+Once you have an account, navigate to the [settings](https://www.twitch.tv/settings/) page and then going to the [connections](https://www.twitch.tv/settings/connections) tab. At the bottom of the page you will find a button to register your application. By clicking this button you will be taken to a forms page, where you can begin registering for a client-id.
+For our example problem we will name our application "My Awesome Play", but feel free to name yours to whatever you'd like. Because we are setting up the API locally, we will be using http://localhost as our redirect URI. Feel free to also use this as your redirect URI for your site. Lastly we have the application category. For this, our category will be a Website Integration.
+When you have it all filled out, your form should look something similar to the one seen below.
 
+![Auth Form](registering.JPG)
+
+Check the terms and agreement box, and hit the register button to recieve your own client-id.
+
+![ClientID](clientid.JPG)
+Your client-ID ready to be used!
+
+##Setting Up The Site
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
