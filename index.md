@@ -38,19 +38,63 @@ Now that we have a client-ID, we can begin coding!
 
 For our demo site, we have created a simple webpage that will embed our clips video. 
 
-'''
-<html>
-<head>
-   <title>Twitch Tutorial</title>
-</head>
-<body>
+    <html>
+    <head>
+       <title>Twitch Tutorial</title>
+    </head>
+    <body>
 	<div>My Awesome Kill!</div>
-   <div id="clips-display"></div>
-    <script src="TwitchClip.js"></script>
-</body>
-</html>
-'''
+       <div id="clips-display"></div>
+       <script src="TwitchClip.js"></script>
+     </body>
+    </html>
 
+The above code will serve as a simple template for outputting our stream. The clip will be embedded at the second <div>. The bulk of our project however, will occur in our javascript file, TwitchClip.js.
+
+##Making AJAX Call to Twitch
+
+To start we will open up a new javascript file. In our case, this file is named TwitchClip.js. We begin with an Ajax request
+
+    var request = new XMLHttpRequest();
+
+Next we will set-up our URL. The basic get URL for a twitch clip will be 
+
+     var base = "https://api.twitch.tv/kraken/clips/"
+
+From there, we have several options to append to our URL to make the call more specific. We can either a)Embed a clip from a specific user or b) Embed a clip from a game.
+
+###Getting User Clip URL
+
+To embed a specific clip, we will need to append to our URL a "slug", which is a unique string generated for every clip. To get a clip's specific slug, navigate and click on the clip of interest.
+
+![clip of interest](coi.JPG)
+
+At the bottom, you will notice a URL in the form of
+
+    https://clips.twitch.tv/<slug>
+	
+Where the <slug> is the string that will be our slug. Using our example clip, we can finally generate a complete URL to make our API call.
+
+     var slug = ""
+	 var URL = base + slug;
+	 
+With our URL in hand, we make our GET request
+
+    request.open('GET',URL);
+	
+After specifying the type of request we are making, we will also add required headers to our request in order to access the clip.
+
+The first header will be our client-ID.
+
+     var clientID = '3xdd0dqtuudri6fvoeymdloty9qj7p';
+	 request.setRequestHeader('Client-ID', clientID);
+	 
+The second header to add will let the server know which version we are accessing.
+
+	request.setRequestHeader('Accept', 'application/vnd.twitchtv.v4+json');
+
+
+	 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
 ### Markdown
