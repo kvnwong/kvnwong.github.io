@@ -59,9 +59,9 @@ To start we will open up a new javascript file. In our case, this file is named 
 
 Next we will set-up our URL. The basic get URL for a twitch clip will be 
 
-     var base = "https://api.twitch.tv/kraken/clips/"
+    var base = "https://api.twitch.tv/kraken/clips/"
 
-From there, we have several options to append to our URL to make the call more specific. We can either a)Embed a clip from a specific user or b) Embed a clip from a game.
+From there, we have several options to append to our URL to make the call more specific. We can either a)Embed a single clip from a specific user or b) Embed multiple top clips.
 We will start our project by first embedding a clip from a specific user.
 
 ###Getting User Clip URL
@@ -76,8 +76,8 @@ At the bottom, you will notice a URL in the form of
 	
 Where the slug is the string that will be our slug. Using our example clip, we can finally generate a complete URL to make our API call.
 
-     var slug = "BreakableRoundMoonBrokeBack"
-	 var URL = base + slug;
+    var slug = "BreakableRoundMoonBrokeBack"
+	var URL = base + slug;
 	 
 With our URL in hand, we make our GET request
 
@@ -119,45 +119,95 @@ Let's go over what is happening in the clipsLoaded function:
 
     var clipList = JSON.parse(request.responseText);
 
-This line will parse the JSON object returned by the request into javascript object such that we can access each indiviual element of the object more easily.
+The above line will parse the JSON object returned by the request into javascript object such that we can access each indiviual element of the object more easily.
 
     var clipsDisplay = document.getElementById('clips-display');
     clipItem = document.createElement('div');
 	clipItem.innerHTML = clipList.embed_html;
 	clipsDisplay.appendChild(clipItem);
 	
+The code shown above uses the DOM to access the html and creates a div. The clip we want is then accessed through the parsed JSON code. The portion we are interested in (embed_html) is called by clipList.embed_html and then appeneded to the html.
 
+The very last piece of code that we will add to our javascript is:
+
+     request.send();
 	 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+This will send our GET request to Twitch.
 
-### Markdown
+##Final Code
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+If you followed our example step by step, then by the end you should have a javascript similar to the one seen below:
 
-```markdown
-Syntax highlighted code block
+    var request = new XMLHttpRequest();
 
-# Header 1
-## Header 2
-### Header 3
+    var base = "https://api.twitch.tv/kraken/clips/"
+    var slug = "BreakableRoundMoonBrokeBack"
+    var URL = base + slug;
 
-- Bulleted
-- List
+    request.addEventListener('load', clipsLoaded);
+    request.open('GET', URL);
+    var clientID = '3xdd0dqtuudri6fvoeymdloty9qj7p';
+    request.setRequestHeader('Client-ID', clientID);
+    request.setRequestHeader('Accept', 'application/vnd.twitchtv.v4+json');
 
-1. Numbered
-2. List
+    request.send();
 
-**Bold** and _Italic_ and `Code` text
+    function clipsLoaded() {
+    var clipsDisplay = document.getElementById('clips-display'),
+        clipList = JSON.parse(request.responseText);
 
-[Link](url) and ![Image](src)
-```
+	clipItem = document.createElement('div');
+	clipItem.innerHTML = clipList.embed_html;
+	clipsDisplay.appendChild(clipItem);
+	 }
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+###Other Clips to Embed
 
-### Jekyll Themes
+As mentioned previously, users can also embed clips from a particular game instead of a user. In order to do this, some simple modifications must be made to the URL passed and the load function.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/kvnwong/kvnwong.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+    var base = "https://api.twitch.tv/kraken/clips/top"
+	
+With out new base URL, we can append several parameters to it to specify what clip in particular we are interested in.
 
-### Support or Contact
+![appending](append.JPG)
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+For example, if we wanted the top 4 clips from the game Overwatch within the past week sorted by popularity, our URL would be
+
+    var URL = "https://api.twitch.tv/kraken/clips/top?game=Overwatch&limit=5&trending=true&period=week"
+	request.open('GET', URL);
+	
+Our request headers will still remain the same, however the JSON returned by the call is a bit different than the one seen previously.
+This time, the object returned is an array of clips equal to the number of clips requested. In our case this would be 4. To embed this video, we still require the embed_html as seen below.
+
+![multi](mult.JPG)
+
+In order to access every clips embed_html, we will use the forEach method in our clipList function to loop through the array, create a div and add the embed_html to the div.
+
+    clipList.clips.forEach(function(clip, index, array) {
+    clipItem = document.createElement('div');
+    clipItem.innerHTML = clip.embed_html;
+    clipsDisplay.appendChild(clipItem);
+	
+Our new clipList function should now look like:
+
+    function clipsLoaded() {
+    var clipsDisplay = document.getElementById('clips-display'),
+        clipList = JSON.parse(request.responseText);
+
+		console.log(clipList);
+    clipList.clips.forEach(function(clip, index, array) {
+        clipItem = document.createElement('div');
+        clipItem.innerHTML = clip.embed_html;
+        clipsDisplay.appendChild(clipItem);
+    });
+    }   
+
+The webpage should now contain multiple top clips, all from Overwatch that were created within the past week.
+
+![mweb](mweb.JPG)
+
+##Get To Showcasing Your Own Clips
+
+After going through this guide, you should now be able to access Twitch's API to get any clips you want to add to your own website. You can customize your own site to have top plays from popular games, or from a specific channel or plays you made yourself! So go out there and get ready to show the world what awesome gaming skills you have! 
+
+
