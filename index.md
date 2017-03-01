@@ -62,6 +62,7 @@ Next we will set-up our URL. The basic get URL for a twitch clip will be
      var base = "https://api.twitch.tv/kraken/clips/"
 
 From there, we have several options to append to our URL to make the call more specific. We can either a)Embed a clip from a specific user or b) Embed a clip from a game.
+We will start our project by first embedding a clip from a specific user.
 
 ###Getting User Clip URL
 
@@ -73,9 +74,9 @@ At the bottom, you will notice a URL in the form of
 
     https://clips.twitch.tv/<slug>
 	
-Where the <slug> is the string that will be our slug. Using our example clip, we can finally generate a complete URL to make our API call.
+Where the slug is the string that will be our slug. Using our example clip, we can finally generate a complete URL to make our API call.
 
-     var slug = ""
+     var slug = "BreakableRoundMoonBrokeBack"
 	 var URL = base + slug;
 	 
 With our URL in hand, we make our GET request
@@ -93,6 +94,38 @@ The second header to add will let the server know which version we are accessing
 
 	request.setRequestHeader('Accept', 'application/vnd.twitchtv.v4+json');
 
+###Handling API Response
+
+We now move onto how we will handle the API response. A response using the provided URL and headers will be returned in JSON format. The repsonse will be a single object as seen below.
+
+![clip response]clipresponse.JPG
+
+What we are specifically interested for embedding a clip is the embed_html portion of the JSON object. We will now access and add the embed_html to our webpage using the clipsLoaded function.
+
+     request.addEventListener('load', clipsLoaded);
+
+The above line will execute the clipsLoaded function once the GET request has been loaded. 
+     
+    function clipsLoaded() {
+   
+    var clipList = JSON.parse(request.responseText);
+    var clipsDisplay = document.getElementById('clips-display');
+    clipItem = document.createElement('div');
+	clipItem.innerHTML = clipList.embed_html;
+	clipsDisplay.appendChild(clipItem);
+	}
+	
+Let's go over what is happening in the clipsLoaded function:
+
+    var clipList = JSON.parse(request.responseText);
+
+This line will parse the JSON object returned by the request into javascript object such that we can access each indiviual element of the object more easily.
+
+    var clipsDisplay = document.getElementById('clips-display');
+    clipItem = document.createElement('div');
+	clipItem.innerHTML = clipList.embed_html;
+	clipsDisplay.appendChild(clipItem);
+	
 
 	 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
