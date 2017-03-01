@@ -32,7 +32,7 @@ Check the terms and agreement box, and hit the register button to recieve your o
 ![ClientID](clientid.JPG)
 Your client-ID ready to be used!
 
-##Setting Up The Site
+## Setting Up The Site
 
 Now that we have a client-ID, we can begin coding! 
 
@@ -51,7 +51,7 @@ For our demo site, we have created a simple webpage that will embed our clips vi
 
 The above code will serve as a simple template for outputting our stream. The clip will be embedded at the second <div>. The bulk of our project however, will occur in our javascript file, TwitchClip.js.
 
-##Making AJAX Call to Twitch
+## Making AJAX Call to Twitch
 
 To start we will open up a new javascript file. In our case, this file is named TwitchClip.js. We begin with an Ajax request
 
@@ -64,7 +64,7 @@ Next we will set-up our URL. The basic get URL for a twitch clip will be
 From there, we have several options to append to our URL to make the call more specific. We can either a)Embed a single clip from a specific user or b) Embed multiple top clips.
 We will start our project by first embedding a clip from a specific user.
 
-###Getting User Clip URL
+### Getting User Clip URL
 
 To embed a specific clip, we will need to append to our URL a "slug", which is a unique string generated for every clip. To get a clip's specific slug, navigate and click on the clip of interest.
 
@@ -94,7 +94,7 @@ The second header to add will let the server know which version we are accessing
 
 	request.setRequestHeader('Accept', 'application/vnd.twitchtv.v4+json');
 
-###Handling API Response
+### Handling API Response
 
 We now move onto how we will handle the API response. A response using the provided URL and headers will be returned in JSON format. The repsonse will be a single object as seen below.
 
@@ -134,7 +134,7 @@ The very last piece of code that we will add to our javascript is:
 	 
 This will send our GET request to Twitch.
 
-##Final Code
+## Final Code
 
 If you followed our example step by step, then by the end you should have a javascript similar to the one seen below:
 
@@ -161,7 +161,7 @@ If you followed our example step by step, then by the end you should have a java
 	clipsDisplay.appendChild(clipItem);
 	 }
 
-###Other Clips to Embed
+### Other Clips to Embed
 
 As mentioned previously, users can also embed clips from a particular game instead of a user. In order to do this, some simple modifications must be made to the URL passed and the load function.
 
@@ -206,7 +206,7 @@ The webpage should now contain multiple top clips, all from Overwatch that were 
 
 ![mweb](mweb.JPG)
 
-##Get To Showcasing Your Own Clips
+## Get To Showcasing Your Own Clips
 
 After going through this guide, you should now be able to access Twitch's API to get any clips you want to add to your own website. You can customize your own site to have top plays from popular games, or from a specific channel or plays you made yourself! So go out there and get ready to show the world what awesome gaming skills you have! 
 
